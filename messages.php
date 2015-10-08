@@ -3,8 +3,8 @@ header('Content-Type: application/json');
 ?>
 <?php include "include/db_connect_oo.php" ?>
 <?php
-  $sql = "SELECT m.id, m.message, m.lat, m.lng
-          FROM messages m";
+  $sql = "SELECT m.id, m.message, m.lat, m.lng, u.name
+          FROM messages m INNER JOIN users u ON m.user_id = u.id";
   if ( isset($_GET['lat']) || isset($_GET['lng']) ) {
     $sql .= "";
   }
@@ -16,6 +16,7 @@ header('Content-Type: application/json');
       $one['message'] = $row["message"];
       $one['lat'] = $row["lat"];
       $one['lng'] = $row["lng"];
+      $one['user']['name'] = $row["name"];
 
       $arr[] = $one;
     }
