@@ -10,6 +10,7 @@ header('Content-Type: application/json');
   }
   $user_id = $_GET['id'];
 
+  // get info
   $sql = "SELECT *
           FROM users
           WHERE id = $user_id";
@@ -23,6 +24,24 @@ header('Content-Type: application/json');
       $user->email = $row["email"];
       $user->facebook_id = $row["facebook_id"];
     }
+  }
+
+  // get my messages
+  $sql2 = "SELECT * FROM messages WHERE user_id=$user_id ORDER BY id DESC";
+  $result2 = $conn->query($sql2);
+  if ($result2->num_rows > 0) {
+    $messages = array();
+    while($row = $result2->fetch_assoc()) {
+      $message = new stdClass();
+      $message->id = $row["id"];
+      $message->message = $row["message"];
+      $message->lat = $row["lat"];
+      $message->lng = $row["lng"];
+      $message->created_at = $row["created_at"];
+
+      $messages[] = $message;
+    }
+    $user->messages = $messages;
   }
 
   $conn->close();
