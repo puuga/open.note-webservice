@@ -11,12 +11,13 @@ $post_data->lng = $_POST["lng"];
 
 // 1. write database
 
-$sql = "INSERT INTO messages (user_id, channel_id, message, lat, lng, created_at, updated_at)
+$sql = "INSERT INTO messages (user_id, channel_id, message, lat, lng, location, created_at, updated_at)
           VALUES ('$post_data->user_id',
             2,
             '$post_data->message',
             $post_data->lat,
             $post_data->lng,
+            GeomFromText('POINT($post_data->lat $post_data->lng)'),
             NOW(),
             NOW()
           ) ";
